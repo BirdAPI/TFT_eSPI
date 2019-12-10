@@ -4540,12 +4540,26 @@ int16_t TFT_eSPI::drawString(const char *string, int32_t poX, int32_t poY)
   return drawString(string, poX, poY, textfont);
 }
 
+int16_t TFT_eSPI::drawCustomString(char *string, int32_t x, int32_t y, uint8_t paddingX, uint8_t paddingY, uint16_t stringWidth) {
+  if (stringWidth == 0) {
+    stringWidth = textWidth((const char*)string, GXFF);
+  }
+  if (textbgcolor != textcolor) {
+    fillRect(x - paddingX, y - paddingY, stringWidth + (2*paddingX), glyph_ab + (2*paddingY), textbgcolor);
+  }
+  // do not let original code draw bg
+  textbgcolor = textcolor;
+  return drawString((const char *)string, x, y, GXFF, stringWidth);
+}
+
 // With font number. Note: font number is over-ridden if a smooth font is loaded
-int16_t TFT_eSPI::drawString(const char *string, int32_t poX, int32_t poY, uint8_t font)
+int16_t TFT_eSPI::drawString(const char *string, int32_t poX, int32_t poY, uint8_t font, uint16_t cwidth)
 {
   int16_t sumX = 0;
   uint8_t padding = 1, baseline = 0;
-  uint16_t cwidth = textWidth(string, font); // Find the pixel width of the string in the font
+  if (cwidth == 0) {
+    cwidth = textWidth(string, font); // Find the pixel width of the string in the font
+  }
   uint16_t cheight = 8 * textsize;
 
 #ifdef LOAD_GFXFF
@@ -4927,6 +4941,13 @@ int16_t TFT_eSPI::drawFloat(float floatNumber, uint8_t dp, int32_t poX, int32_t 
 ***************************************************************************************/
 
 #ifdef LOAD_GFXFF
+
+void TFT_eSPI::setCustomFont(const GFXfont *f, uint16_t fgColor, int32_t bgColor) {
+  setFreeFont(f);
+  setTextColor(fgColor, bgColor == -1 ? fgColor : (uint16_t)bgColor);
+  setTextDatum(TL_DATUM);
+  setTextSize(1);
+}
 
 void TFT_eSPI::setFreeFont(const GFXfont *f)
 {

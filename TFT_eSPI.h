@@ -253,6 +253,10 @@
   #define T_CS_H digitalWrite(TOUCH_CS, HIGH)
 #endif
 
+#ifdef GXFF
+#undef GXFF
+#endif
+#define GXFF 1
 
 #ifdef TFT_WR
   #if defined (ESP32)
@@ -723,6 +727,7 @@ class TFT_eSPI : public Print {
            setTextPadding(uint16_t x_width),
 
 #ifdef LOAD_GFXFF
+           setCustomFont(const GFXfont *f, uint16_t fgColor, int32_t bgColor = -1),
            setFreeFont(const GFXfont *f = NULL),
            setTextFont(uint8_t font),
 #else
@@ -789,8 +794,10 @@ class TFT_eSPI : public Print {
            drawFloat(float floatNumber, uint8_t decimal, int32_t poX, int32_t poY, uint8_t font),
            drawFloat(float floatNumber, uint8_t decimal, int32_t poX, int32_t poY),
 
+           drawCustomString(char *string, int32_t x, int32_t y, uint8_t paddingX = 0, uint8_t paddingY = 0, uint16_t stringWidth = 0),
+
            // Handle char arrays
-           drawString(const char *string, int32_t poX, int32_t poY, uint8_t font),
+           drawString(const char *string, int32_t poX, int32_t poY, uint8_t font, uint16_t cwidth = 0),
            drawString(const char *string, int32_t poX, int32_t poY),
            drawCentreString(const char *string, int32_t dX, int32_t poY, uint8_t font), // Deprecated, use setTextDatum() and drawString()
            drawRightString(const char *string, int32_t dX, int32_t poY, uint8_t font),  // Deprecated, use setTextDatum() and drawString()
