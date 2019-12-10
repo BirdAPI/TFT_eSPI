@@ -885,7 +885,7 @@ class TFT_eSPI : public Print {
   int32_t  addr_row, addr_col;
 
   uint32_t fontsloaded;
-
+public:
   uint8_t  glyph_ab,   // glyph delta Y (height) above baseline
            glyph_bb;   // glyph delta Y (height) below baseline
 
@@ -893,7 +893,7 @@ class TFT_eSPI : public Print {
   bool     textwrapX, textwrapY;   // If set, 'wrap' text at right and optionally bottom edge of display
   bool     _swapBytes; // Swap the byte order for TFT pushImage()
   bool     locked, inTransaction; // Transaction and mutex lock flags for ESP32
-
+protected:
   bool     _booted;    // init() or begin() has already run once
   bool     _cp437;     // If set, use correct CP437 charset (default is ON)
   bool     _utf8;      // If set, use UTF-8 decoder in print stream 'write()' function (default ON)

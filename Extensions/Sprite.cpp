@@ -1468,11 +1468,11 @@ void TFT_eSprite::drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color, uin
 {
   if (!_created ) return;
 
-  if ((x >= _iwidth)            || // Clip right
-      (y >= _iheight)           || // Clip bottom
-      ((x + 6 * size - 1) < 0) || // Clip left
-      ((y + 8 * size - 1) < 0))   // Clip top
-    return;
+//  if ((x >= _iwidth)            || // Clip right
+//      (y >= _iheight)           || // Clip bottom
+//      ((x + 6 * size - 1) < 0) || // Clip left
+//      ((y + 8 * size - 1) < 0))   // Clip top
+//    return;
 
   if (c < 32) return;
 #ifdef LOAD_GLCD

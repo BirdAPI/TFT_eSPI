@@ -2465,11 +2465,11 @@ int16_t TFT_eSPI::fontHeight(void)
 ***************************************************************************************/
 void TFT_eSPI::drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color, uint32_t bg, uint8_t size)
 {
-  if ((x >= _width)            || // Clip right
-      (y >= _height)           || // Clip bottom
-      ((x + 6 * size - 1) < 0) || // Clip left
-      ((y + 8 * size - 1) < 0))   // Clip top
-    return;
+//  if ((x >= _width)            || // Clip right
+//      (y >= _height)           || // Clip bottom
+//      ((x + 6 * size - 1) < 0) || // Clip left
+//      ((y + 8 * size - 1) < 0))   // Clip top
+//    return;
 
   if (c < 32) return;
 #ifdef LOAD_GLCD
@@ -4944,7 +4944,7 @@ void TFT_eSPI::setFreeFont(const GFXfont *f)
   uint16_t numChars = pgm_read_word(&gfxFont->last) - pgm_read_word(&gfxFont->first);
   
   // Find the biggest above and below baseline offsets
-  for (uint8_t c = 0; c < numChars; c++)
+  for (uint16_t c = 0; c < numChars; c++)
   {
     GFXglyph *glyph1  = &(((GFXglyph *)pgm_read_dword(&gfxFont->glyph))[c]);
     int8_t ab = -pgm_read_byte(&glyph1->yOffset);
