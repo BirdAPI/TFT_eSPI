@@ -2459,6 +2459,19 @@ int16_t TFT_eSPI::fontHeight(void)
   return fontHeight(textfont);
 }
 
+// void TFT_eSPI::drawSpriteChar(int32_t x, int32_t y, uint16_t c, uint32_t color, uint32_t bg, uint8_t size) {
+//   static auto _sprite = new TFT_eSprite(this);
+//   auto glyph = &(((GFXglyph *)pgm_read_dword(&gfxFont->glyph))[c - gfxFont->first]);
+//   _sprite->createSprite(glyph->xAdvance, glyph_ab + glyph_bb);
+//   _sprite->setCustomFont(gfxFont, color);
+//   if (bg != color) {
+//     _sprite->fillSprite(bg);
+//   }
+//   // _sprite->drawChar(0, 0, c, color, color, size);
+//   _sprite->pushSprite(x, y);
+//   _sprite->deleteSprite();
+// }
+
 /***************************************************************************************
 ** Function name:           drawChar
 ** Description:             draw a single character in the Adafruit GLCD font
@@ -4958,20 +4971,27 @@ void TFT_eSPI::setFreeFont(const GFXfont *f)
   }
 
   textfont = 1;
+  if (gfxFont == (GFXfont *)f) {
+    return;
+  }
   gfxFont = (GFXfont *)f;
 
   glyph_ab = 0;
   glyph_bb = 0;
   uint16_t numChars = pgm_read_word(&gfxFont->last) - pgm_read_word(&gfxFont->first);
   
+  int8_t ab, bb;
+  uint8_t xadv;
   // Find the biggest above and below baseline offsets
   for (uint16_t c = 0; c < numChars; c++)
   {
     GFXglyph *glyph1  = &(((GFXglyph *)pgm_read_dword(&gfxFont->glyph))[c]);
-    int8_t ab = -pgm_read_byte(&glyph1->yOffset);
+    ab = -pgm_read_byte(&glyph1->yOffset);
     if (ab > glyph_ab) glyph_ab = ab;
-    int8_t bb = pgm_read_byte(&glyph1->height) - ab;
+    bb = pgm_read_byte(&glyph1->height) - ab;
     if (bb > glyph_bb) glyph_bb = bb;
+    xadv = pgm_read_byte(&glyph1->xAdvance);
+    if (xadv > glyph_xadv) glyph_xadv = xadv;
   }
 }
 

@@ -674,6 +674,7 @@ class TFT_eSPI : public Print {
   // These are virtual so the TFT_eSprite class can override them with sprite specific functions
   virtual void     drawPixel(int32_t x, int32_t y, uint32_t color),
                    drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color, uint32_t bg, uint8_t size),
+                  //  drawSpriteChar(int32_t x, int32_t y, uint16_t c, uint32_t color, uint32_t bg, uint8_t size),
                    drawLine(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint32_t color),
                    drawFastVLine(int32_t x, int32_t y, int32_t h, uint32_t color),
                    drawFastHLine(int32_t x, int32_t y, int32_t w, uint32_t color),
@@ -894,7 +895,8 @@ class TFT_eSPI : public Print {
   uint32_t fontsloaded;
 public:
   uint8_t  glyph_ab,   // glyph delta Y (height) above baseline
-           glyph_bb;   // glyph delta Y (height) below baseline
+           glyph_bb,   // glyph delta Y (height) below baseline
+           glyph_xadv; // glyph character spacing
 
   bool     isDigits;   // adjust bounding box for numbers to reduce visual jiggling
   bool     textwrapX, textwrapY;   // If set, 'wrap' text at right and optionally bottom edge of display
